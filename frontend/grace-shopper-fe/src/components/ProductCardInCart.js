@@ -17,15 +17,23 @@ import React, { useState } from "react";
 import { currencyFormat } from "../helpers/formats";
 import { useNavigate } from "react-router-dom";
 import AddToCart from './AddToCart';
+import {
+    destroyCartProduct
+} from '../api';
+
+
 
 const ProductCard = (props) => {
+
   const { user,
     product,
     setOpenAddToCart,
     setProductToAddToCart,
     setAnchorEl,
 setTotal,
-total } = props;
+total,
+setCartReRender,
+forceRerender } = props;
 
 
     const navigate = useNavigate();  
@@ -47,11 +55,10 @@ total } = props;
     setExpanded(!expanded);
   };  
 
-  const handleAddToCartClick = (e) => {
-    e.preventDefault();
-    setAnchorEl(e.currentTarget);
-    setProductToAddToCart(product);
-    setOpenAddToCart(true);
+  const removeFromCart = (e) => {
+    console.log('removing...')
+    destroyCartProduct(user.id, product.id);
+    forceRerender();
   }  
   
   return (
@@ -62,11 +69,24 @@ total } = props;
         subheader=""
       />
 
+      <CardContent>
+          <Typography paragraph>
+              Quantity: {product.quantity}
+          </Typography>
+      </CardContent>
+
     <Box sx={{display:"flex", flexDirection:"column", alignSelf:"flex-end"
 }}>
-        <Button>
-        REMOVE FROM CART
-    </Button>
+                <Button
+                  variant="outlined"
+                  sx={{ my: 1, mx: 1.5 }}
+                  onClick={() => {
+                    navigate(`/cart/${user.id}/${product.id}`)
+                    removeFromCart(product.id);
+                  }}
+                >
+                  Remove From Cart
+                </Button>
 
     </Box>
 

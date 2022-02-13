@@ -19,7 +19,19 @@ async function getCartByUserId( userId ){
         let total = 0;
         for(let i = 0; i < cart.length; i++){
             let currentProduct = await getProductsById(cart[i].productId);
-            array.push(currentProduct);
+            currentProduct.quantity = 1;
+            array.forEach((element, index) => {
+                console.log('here', array[index], currentProduct);
+                if(element.id === currentProduct.id){
+                    array[index].quantity++;
+                } else if(element.id !== currentProduct.id && index === array.length - 1){
+                    array.push(currentProduct);
+                }
+            });
+
+            if(array.length === 0){
+                array.push(currentProduct);
+            }
             total += currentProduct.price;
         }
 
@@ -56,12 +68,12 @@ async function addToCart( { userId, productId } ) {
 async function removeFromCart( { userId, productId } ){
     console.log("Removing product from cart!");
     try{
-        const { rows: [ product ] } = await client.query(`
+        console.log('in db: ', userId, productId)
+        await client.query(`
             DELETE FROM cart
             WHERE "productId"=$1
             AND "userId"=$2
         `, [ productId, userId ]);
-        return product;
     } catch(error){
         throw error;
     }

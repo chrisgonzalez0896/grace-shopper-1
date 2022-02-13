@@ -39,16 +39,20 @@ cartRouter.post('/', async(req, res) => {
 });
 
 //here we need to see both the userId and a specific productId is specified
-cartRouter.delete('/',requireUser,async(req,res,next) => {
-    const { userId, productId } = req.body;
+cartRouter.delete('/:userId/:productId',requireUser,async(req,res,next) => {
+
+    const userId = req.params.userId;
+    const productId = req.params.productId;
     try{
-        if( productId ){
-            await removeFromCart( req.body );
-        } else{
-            await clearCart( userId );
-        }
-        const cart = await getCartByUserId( userId );
-        res.send(cart);
+        // if( productId ){
+        //     await removeFromCart( req.body );
+        // } else{
+        //     await clearCart( userId );
+        // }
+        console.log('in api ids: ', userId, productId)
+           const item = await removeFromCart( {userId, productId} );
+console.log('in api, deleted item: ', item)
+        res.send({item});
     } catch(error){
         throw error;
     }

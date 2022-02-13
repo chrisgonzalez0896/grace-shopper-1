@@ -34,6 +34,8 @@ function App() {
   const [productBeingViewed, setProductBeingViewed] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [cartReRender, setCartReRender] = useState(false);
+
 
 
   useEffect(() => {
@@ -53,6 +55,15 @@ function App() {
     setUser({});
     localStorage.removeItem('token');
   };
+
+  const forceRerender = () => {
+    console.log('rerender', cartReRender)
+    if(cartReRender === false){
+      setCartReRender(true)
+    } else if(cartReRender === true) {
+      setCartReRender(false)
+    }
+  }
 
   console.log("userId on home page: ", user.id)
   return (
@@ -74,6 +85,7 @@ function App() {
         <Route path='/topdeals' element={<TopDeals products={productsArray} /> }></Route>
         <Route path='/search' element={<SearchResult products={productsArray} searchTerm={searchTerm}/>} />
         <Route path='/cart/:userId' element={<Cart user={user} />} />
+        <Route path='/cart/:userId/:productId' element={<Cart user={user} />} />
       </Routes>
     </Router>
   );

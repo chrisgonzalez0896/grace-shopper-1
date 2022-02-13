@@ -480,87 +480,33 @@ export const fetchCartByUserId = async ( userId ) => {
   }
 }
 
-// export const postNewProduct = async (name, detail, category, price, linksArray) => {
-//   try {
-//     const response = await fetch(`${BASE_URL}/products`, {
-//       method: "POST",
-//       headers: getHeaders(),
-//       body: JSON.stringify({
-//         name: name,
-//         detail: detail,
-//         category: category,
-//         price: price,
-//         linksArray: linksArray
-//       })
-//     })
-//     return await response.json();
-//   } catch (error) {
-//     console.log("An error occurred while trying to list a product.")
-//     throw error
-//   }
-// };
+export const destroyCartProduct = async ( userId, productId ) => {
+  try {
+    const response = await fetch(`${BASE_URL}/cart/${userId}/${productId}`, {
+      method: "DELETE",
+      headers: getHeaders(),
+    })
+    const result = await response.json()
+    return result;
+  } catch (error) {
+    console.log("An error occurred while trying to remove from cart")
+    throw error
+  }
+}
 
 
-// export const postNewProduct = async (name, detail, category, price, linksArray) => {
-//   try {
-//     const response = await fetch(`${BASE_URL}/products`, {
-//       method: "POST",
-//       headers: getHeaders(),
-//       body: JSON.stringify({
-//         name: name,
-//         detail: detail,
-//         category: category,
-//         price: price,
-//         linksArray: linksArray
-//       })
-//     })
-//     return await response.json();
-//   } catch (error) {
-//     console.log("An error occurred while trying to list a product.")
-//     throw error
-//   }
-// };
-
-
-// export const postNewProduct = async (name, detail, category, price, linksArray) => {
-//   try {
-//     const response = await fetch(`${BASE_URL}/products`, {
-//       method: "POST",
-//       headers: getHeaders(),
-//       body: JSON.stringify({
-//         name: name,
-//         detail: detail,
-//         category: category,
-//         price: price,
-//         linksArray: linksArray
-//       })
-//     })
-//     return await response.json();
-//   } catch (error) {
-//     console.log("An error occurred while trying to list a product.")
-//     throw error
-//   }
-// };
-
-
-// export const postNewProduct = async (name, detail, category, price, linksArray) => {
-//   try {
-//     const response = await fetch(`${BASE_URL}/products`, {
-//       method: "POST",
-//       headers: getHeaders(),
-//       body: JSON.stringify({
-//         name: name,
-//         detail: detail,
-//         category: category,
-//         price: price,
-//         linksArray: linksArray
-//       })
-//     })
-//     return await response.json();
-//   } catch (error) {
-//     console.log("An error occurred while trying to list a product.")
-//     throw error
-//   }
-// };
-
-
+export const checkout = async ( userId ) => {
+  try {
+    const response = await fetch(`${BASE_URL}/create-checkout-session`, {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify({
+        userId: userId
+      })
+    })
+    return await response.json();
+  } catch (error) {
+    console.log("An error occurred while trying to add a product to the cart.")
+    throw error
+  }
+};
