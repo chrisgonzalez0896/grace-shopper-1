@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from "@mui/material";
-import PictureSlider from "./PictureSlider";
+// import PictureSlider from "./PictureSlider";
 import ProductCardList from "./ProductCardList";
 
 
@@ -24,7 +24,7 @@ const SearchResult = (props) => {
 
     <Container>
       <h1> Search Results :  </h1>
-      <PictureSlider products={searchProducts(searchTerm, products)} maxItems={FEATURED_NUMBER}/>
+      {/* <PictureSlider products={searchProducts(searchTerm, products)} maxItems={FEATURED_NUMBER}/> */}
       <ProductCardList products={searchProducts(searchTerm, products)} />
     </Container>
 

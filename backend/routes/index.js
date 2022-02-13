@@ -9,6 +9,8 @@ const apiRouter = require('express').Router();
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET  = 'nevertell' } = process.env;
 
+const {addToCart} = require('../db/cart')
+
 const userMiddleware = require('./middleware/userMiddleware')
 apiRouter.use(userMiddleware);
 
@@ -30,6 +32,111 @@ apiRouter.use('/admin',adminRouter);
 
 const cartRouter = require('./cart');
 apiRouter.use('/cart', cartRouter);
+
+//HERE IS WHERE THE ROUTES FOR ADDING TO CART
+apiRouter.post('/electronics', async(req, res) => {
+  const { productId, userId } = req.body;
+  try{
+      const product = await addToCart({productId, userId});
+      // const product = await createProduct({ name, detail, category, price });
+      // const pictures = linksArray.map((element) => {
+      //      addPictureLinksToProduct( element, product.id);
+      // });
+      // product.pictureLinks = pictures;
+      console.log(product);
+      res.send( { product } );
+  } catch(error){
+      console.error(error);
+      next( { name: "Add To Cart Error", message: "An error was encountered while adding to cart." } )
+  }
+});
+
+apiRouter.post('/essentials', async(req, res) => {
+  const { productId, userId } = req.body;
+  try{
+      const product = await addToCart({productId, userId});
+      // const product = await createProduct({ name, detail, category, price });
+      // const pictures = linksArray.map((element) => {
+      //      addPictureLinksToProduct( element, product.id);
+      // });
+      // product.pictureLinks = pictures;
+      console.log(product);
+      res.send( { product } );
+  } catch(error){
+      console.error(error);
+      next( { name: "Add To Cart Error", message: "An error was encountered while adding to cart." } )
+  }
+});
+
+apiRouter.post('/homegoods', async(req, res) => {
+  const { productId, userId } = req.body;
+  try{
+      const product = await addToCart({productId, userId});
+      // const product = await createProduct({ name, detail, category, price });
+      // const pictures = linksArray.map((element) => {
+      //      addPictureLinksToProduct( element, product.id);
+      // });
+      // product.pictureLinks = pictures;
+      console.log(product);
+      res.send( { product } );
+  } catch(error){
+      console.error(error);
+      next( { name: "Add To Cart Error", message: "An error was encountered while adding to cart." } )
+  }
+});
+
+apiRouter.post('/grocery', async(req, res) => {
+  const { productId, userId } = req.body;
+  try{
+      const product = await addToCart({productId, userId});
+      // const product = await createProduct({ name, detail, category, price });
+      // const pictures = linksArray.map((element) => {
+      //      addPictureLinksToProduct( element, product.id);
+      // });
+      // product.pictureLinks = pictures;
+      console.log(product);
+      res.send( { product } );
+  } catch(error){
+      console.error(error);
+      next( { name: "Add To Cart Error", message: "An error was encountered while adding to cart." } )
+  }
+});
+
+apiRouter.post('/lighting', async(req, res) => {
+  const { productId, userId } = req.body;
+  try{
+      const product = await addToCart({productId, userId});
+      // const product = await createProduct({ name, detail, category, price });
+      // const pictures = linksArray.map((element) => {
+      //      addPictureLinksToProduct( element, product.id);
+      // });
+      // product.pictureLinks = pictures;
+      console.log(product);
+      res.send( { product } );
+  } catch(error){
+      console.error(error);
+      next( { name: "Add To Cart Error", message: "An error was encountered while adding to cart." } )
+  }
+});
+
+apiRouter.post('/pets', async(req, res) => {
+  const { productId, userId } = req.body;
+  try{
+      const product = await addToCart({productId, userId});
+      // const product = await createProduct({ name, detail, category, price });
+      // const pictures = linksArray.map((element) => {
+      //      addPictureLinksToProduct( element, product.id);
+      // });
+      // product.pictureLinks = pictures;
+      console.log(product);
+      res.send( { product } );
+  } catch(error){
+      console.error(error);
+      next( { name: "Add To Cart Error", message: "An error was encountered while adding to cart." } )
+  }
+});
+
+//END ROUTES FOR ADDING TO CART
 
 apiRouter.use((error, req, res, next) => {
   const status = error.status ? error.status : 500

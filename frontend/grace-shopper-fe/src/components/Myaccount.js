@@ -7,7 +7,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import EditProfile from "./EditProfile";
 import AddressList from "./AddressList";
 import { getAllAddresses } from "../api";
-import BasicDetails from "./BasicDetails";
+import BasicDetails from "./basicDetails";
 import OrderList from "./OrderList";
 import { getOrdersByUserId } from "../api/index";
 

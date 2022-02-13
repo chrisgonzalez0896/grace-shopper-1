@@ -1,30 +1,47 @@
+import { Container } from "@mui/material";
 import React, { useState } from "react";
-import { Container, Box, Typography, Tab, Button, Grid} from "@mui/material";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import ProductCard from "./ProductCard";
+import AddToCart from "./AddToCart";
+import ProductCard from "./productCard";
 
 const ProductCardList = (props) => {
 
-    const { products } = props;
+  const { user, products } = props;
+
+  const [openAddToCart, setOpenAddToCart] = useState(false);
+  const [productToAddToCart, setProductToAddToCart] = useState();
+  const [anchorEl, setAnchorEl] = useState();
 
 
   return (
-    
+
     <Container style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
-        gap: 15,
-      }}>
-        {
-            products ? products.map(product => {
-                return <ProductCard product={product} />
-            }) : null
-        }
+      display: "grid",
+      gridTemplateColumns: "repeat(4, 1fr)",
+      gap: 15,
+    }}>
+      {
+        products ? products.map(product => {
+          return <ProductCard
+            user={user}
+            product={product}
+            key={product.id}
+            setOpenAddToCart={setOpenAddToCart}
+            setProductToAddToCart={setProductToAddToCart}
+            setAnchorEl={setAnchorEl}
+          />
+        }) : null
+      }
+
+      <AddToCart
+      user={user}
+        product={productToAddToCart}
+        open={openAddToCart}
+        setOpen={setOpenAddToCart}
+        anchorEl={anchorEl}
+      />
+
     </Container>
-  
+
   );
 };
 

@@ -27,6 +27,8 @@ const CustomerHome = (props) => {
     Promise.all([
       fetchAllProducts(), //need to make a a getAllProductPictures function in api/index and integrate throughout backend
     ]).then(([productsFromAPI]) => {
+      console.log('THIS IS products in customerHome')
+      console.log(productsFromAPI)
       setProductsArray(productsFromAPI);
       // console.log(routinesFromAPI)
     });
@@ -57,7 +59,7 @@ const CustomerHome = (props) => {
 
           <TabPanel value="All">
             <Box>
-              <PictureSlider products={productsArray} maxItems={7}/>
+<PictureSlider products={productsArray} maxItems={7} />
             </Box>
           </TabPanel>
 

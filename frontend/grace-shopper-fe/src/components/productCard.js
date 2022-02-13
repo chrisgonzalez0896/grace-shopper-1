@@ -1,26 +1,32 @@
-import React, { useState } from "react";
-import { Container, Box, Typography, Tab, Button } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Typography } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
 import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
 import { red } from "@mui/material/colors";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
+import IconButton from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
+import React, { useState } from "react";
+import { currencyFormat } from "../helpers/formats";
+import { useNavigate } from "react-router-dom";
+import AddToCart from './AddToCart';
 
 const ProductCard = (props) => {
-  const { product } = props;
+  const { user,
+    product,
+    setOpenAddToCart,
+    setProductToAddToCart,
+    setAnchorEl } = props;
 
-  const { expand, ...other } = props.product;
-  
-  const ExpandMore = styled((props) => {
-    const { expand, ...other } = props;
+    const navigate = useNavigate();  
+    const { expand, ...other } = props.product;  
+    const ExpandMore = styled((props) => {
+      const { expand, ...other } = props;
     return <IconButton {...other} />;
   })(({ theme, expand }) => ({
     transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
@@ -28,16 +34,21 @@ const ProductCard = (props) => {
     transition: theme.transitions.create("transform", {
       duration: theme.transitions.duration.shortest,
     }),
-  }));
+  }));  
 
-
-
-  const [expanded, setExpanded] = useState(false);
-
+  const [expanded, setExpanded] = useState(false);  
+  
   const handleExpandClick = () => {
     setExpanded(!expanded);
-  };
+  };  
 
+  const handleAddToCartClick = (e) => {
+    e.preventDefault();
+    setAnchorEl(e.currentTarget);
+    setProductToAddToCart(product);
+    setOpenAddToCart(true);
+  }  
+  
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
@@ -46,7 +57,7 @@ const ProductCard = (props) => {
             R
           </Avatar>
         }
-        action={product.price}
+        action={currencyFormat(product.price)}
         title={product.name}
         subheader=""
       />
@@ -55,11 +66,9 @@ const ProductCard = (props) => {
         height="140"
         image={product.pictureLinks[0]}
         alt="Product"
-      />
-
-      <CardActions disableSpacing>
+      />      <CardActions disableSpacing>
         <IconButton aria-label="add to cart">
-          <AddShoppingCartIcon />
+          <AddShoppingCartIcon onClick={handleAddToCartClick}/>
         </IconButton>
         <ExpandMore
           expand={expanded}
@@ -75,9 +84,7 @@ const ProductCard = (props) => {
           <Typography paragraph>Method:</Typography>
           <Typography paragraph>{product.detail}</Typography>
         </CardContent>
-      </Collapse>
-    </Card>
+      </Collapse>    </Card>
   );
 };
-
 export default ProductCard;

@@ -10,8 +10,8 @@ const { createProduct,
     addPictureLinksToProduct,
     deleteProduct } = require('../db/products');
 const { getProductPicturesById,
-    getAllProductPictures } = require("../db/products_pictures");
-// Get list of all products
+    getAllProductPictures } = require("../db/products_pictures");// Get list of all products
+
 productsRouter.get('/', async(req, res) => {
     try{
         const products = await getAllProducts(); // getProducts();  TODO: call the database when it's ready
@@ -28,12 +28,8 @@ productsRouter.get('/', async(req, res) => {
     }
 });
 
-
-productsRouter.get('/:productId', async (req, res) => {
-
-    const { id } = req.params.productId;
-
-    try{
+productsRouter.get('/:productId', async (req, res) => {    const { id } = req.params.productId;    
+try{
         const product = await getProductById( id );
         const pictures = await getProductPicturesById( id );
         product.pictureLinks = pictures;
@@ -42,7 +38,6 @@ productsRouter.get('/:productId', async (req, res) => {
         throw error;
     }
 });
-
 
 productsRouter.get('/category/:category', async (req, res) => {
     const { category } = req.params.category;
@@ -62,6 +57,7 @@ productsRouter.get('/category/:category', async (req, res) => {
         throw error;
     }
 });
+
 productsRouter.post('/', async(req, res) => {
     const { name, detail, category, price, linksArray } = req.body;
     try{
@@ -77,28 +73,17 @@ productsRouter.post('/', async(req, res) => {
     }
 });
 
-
-productsRouter.patch('/:productId',requireUser,async(req,res,next) => {
-
-    const { id } = req.params.productId;
-
-    const { name, detail, category, price, linksArray } = req.body;
+productsRouter.patch('/:productId',requireUser,async(req,res,next) => {    const { id } = req.params.productId;    const { name, detail, category, price, linksArray } = req.body;
     try{
         const product = await updateProduct( { id, name, detail, category, price, linksArray } );
     } catch(error){
         console.error(error);
     }
     res.send( { product } );
-})
+});
 
-
-productsRouter.delete('/:productId',requireUser,async(req,res,next) => {
-    
-    const id = req.params.productId
-    
-    try{
-        
-        const product = await deleteProduct( id );
+productsRouter.delete('/:productId',requireUser,async(req,res,next) => {    const id = req.params.productId    
+    try{        const product = await deleteProduct( id );
         res.send({
             product
         })

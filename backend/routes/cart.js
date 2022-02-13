@@ -34,7 +34,7 @@ cartRouter.post('/', async(req, res) => {
 });
 
 //here we need to see both the userId and a specific productId is specified
-cartRouter.delete('/:productId',requireUser,async(req,res,next) => {
+cartRouter.delete('/',requireUser,async(req,res,next) => {
     const { userId, productId } = req.body;
     try{
         if( productId ){

@@ -1,51 +1,29 @@
 const client = require("./client")
-const { getProductPicturesById } = require("./products_pictures")
-
-//this will be useful for ordering product from price lo to hi, and vice versa, will obviously need to change some of the code
+const { getProductPicturesById } = require("./products_pictures")//this will be useful for ordering product from price lo to hi, and vice versa, will obviously need to change some of the code
 //depending on which way we are trying to sort the data
 function quicksort(array) {
     if (array.length <= 1) {
       return array;
-    }
-  
-    var pivot = array[0];
-    
-    var left = []; 
-    var right = [];
-  
-    for (var i = 1; i < array.length; i++) {
+    }    var pivot = array[0];    var left = [];
+    var right = [];    for (var i = 1; i < array.length; i++) {
       array[i] < pivot ? left.push(array[i]) : right.push(array[i]);
-    }
-  
-    return quicksort(left).concat(pivot, quicksort(right));
-  };
-  
-  var unsorted = [23, 45, 16, 37, 3, 99, 22];
-  var sorted = quicksort(unsorted);
-  
-  console.log('Sorted array', sorted);
+    }    return quicksort(left).concat(pivot, quicksort(right));
+  };  var unsorted = [23, 45, 16, 37, 3, 99, 22];
+  var sorted = quicksort(unsorted);  console.log('Sorted array', sorted);//linksArray is contains all the href links to the pictures for the products
 
-//linksArray is contains all the href links to the pictures for the products
-async function createProduct({ name, detail, category, price, linksArray }){
+
+  async function createProduct({ name, detail, category, price, linksArray }){
     console.log("Creating product with: ", name, detail, category, price);
-    try{
-
-        const { rows: [ product] } = await client.query(`
+    try{        const { rows: [ product] } = await client.query(`
             INSERT INTO products(name,detail,category,price)
             VALUES($1, $2, $3, $4)
             RETURNING *;
-        `,[ name, detail, category, price ]);
-
-        if( linksArray.length > 0 ){
+        `,[ name, detail, category, price ]);        if( linksArray.length > 0 ){
             console.log("Creating product successful. Adding href links for pictures: ", linksArray);
-            const links = await Promise.all(linksArray.map((item) => addPictureLinksToProduct(item, product.id)));
-
-            product.links = links;
+            const links = await Promise.all(linksArray.map((item) => addPictureLinksToProduct(item, product.id)));            product.links = links;
         } else{
             product.links = null;
-        }
-
-        return product;
+        }        return product;
     }catch(error){
         throw error;
     }
@@ -58,9 +36,7 @@ async function addPictureLinksToProduct( link, id ){
         INSERT INTO products_pictures(link,"productId")
         VALUES($1, $2)
         RETURNING *;
-    `,[ link, id ]);
-
-    return result.link;
+    `,[ link, id ]);    return result.link;
     } catch(error){
         throw error;
     }
@@ -68,15 +44,11 @@ async function addPictureLinksToProduct( link, id ){
 
 async function getProductByName( name ){
     console.log("Getting product by name: ", name);
-    try{
-
-        const { rows: [ product ] } = await client.query(`
+    try{        const { rows: [ product ] } = await client.query(`
             SELECT *
             FROM products
             WHERE name=$1;
-        `, [ name ]);
-
-        return product;
+        `, [ name ]);        return product;
     } catch(error){
         throw error;
     }
@@ -84,15 +56,11 @@ async function getProductByName( name ){
 
 async function getProductByCategory( category ){
     console.log("Getting product by category: ", category);
-    try{
-
-        const { rows: [ products ] } = await client.query(`
+    try{        const { rows: [ products ] } = await client.query(`
             SELECT *
             FROM products
             WHERE category=$1;
-        `, [ category ]);
-
-        return products;
+        `, [ category ]);        return products;
     } catch(error){
         throw error;
     }
@@ -105,13 +73,11 @@ async function getProductsById(id) {
             SELECT *
             FROM products
             WHERE id=$1;
-        `, [ id ]);
-
-        return product;
+        `, [ id ]);        return product;
     } catch (error) {
       throw error;
     }
-  }
+  }  
   
   async function getAllProducts() {
     console.log("Getting all products");
@@ -119,9 +85,7 @@ async function getProductsById(id) {
         const { rows: products } = await client.query(`
             SELECT *
             FROM products
-        `);
-
-        await Promise.all(products.map(async (product) => {
+        `);        await Promise.all(products.map(async (product) => {
             const pictures = await getProductPicturesById(product.id);
             product.pictureLinks = pictures
           }));
@@ -129,8 +93,8 @@ async function getProductsById(id) {
     } catch (error) {
       throw error;
     }
-  }
-
+  }  
+  
   async function updateProduct({ name, detail, category, price, id}){
     console.log("Updating product: ", name, detail, category, price, id);
     try{
@@ -139,8 +103,7 @@ async function getProductsById(id) {
             SET name=$1, detail=$2, category=$3, price=$4
             WHERE id=$5
             RETURNING *
-        `,[ name, detail, category, price, id])
-
+        `,[ name, detail, category, price, id])        
         return product;
     }catch(error){
         throw error;
@@ -159,6 +122,22 @@ async function deleteProduct( id ){
     }
 }
 
+async function alterQuantity( id, num ){
+    console.log('Purchasing product with ID: ', id);
+    try{
+        const currentProduct = await getProductsById(id);
+        const quantRemaining = currentProduct.quantity - num;
+        const{ rows: [ product ] } = await client.query(`
+            UPDATE products
+            SET quantity=$1
+            WHERE id=$2
+            RETURNING *
+        `, [ quantRemaining, id ]);
+    } catch(error){
+        throw error;
+    }
+}
+
 module.exports = {
     createProduct,
     getProductByCategory,
@@ -167,5 +146,6 @@ module.exports = {
     getAllProducts,
     updateProduct,
     addPictureLinksToProduct,
-    deleteProduct
+    deleteProduct,
+    alterQuantity
 }

@@ -55,15 +55,14 @@ function App() {
         <Route path='/products' element={<ProductWall user={user} productsArray={productsArray} setProducts={setProductsArray} generalViewOn={generalViewOn} setGeneralViewOn={setGeneralViewOn} productBeingViewed={productBeingViewed} setProductBeingViewed={setProductBeingViewed} />} />
         <Route path='/orders/:id' element={<OrderDetail />} />
         <Route path='/myaccount' element={<MyAccount products={products} user={user} />}/>
-        <Route path='/electronics' element={<CategoryProductsCard products={productsArray} category={"Electronics"} /> }></Route>
-        <Route path='/essentials' element={<CategoryProductsCard products={productsArray} category={"Essentials"} /> }></Route>
-        <Route path='/grocery' element={<CategoryProductsCard products={productsArray} category={"Grocery"} /> }></Route>
-        <Route path='/lighting' element={<CategoryProductsCard products={productsArray} category={"Lighting"} /> }></Route>
-        <Route path='/pets' element={<CategoryProductsCard products={productsArray} category={"Pets"} /> }></Route>
-        <Route path='/homegoods' element={<CategoryProductsCard products={productsArray} category={"Homegoods"} /> }></Route>
+        <Route path='/electronics' element={<CategoryProductsCard user={user} products={productsArray} category={"Electronics"} /> }></Route>
+        <Route path='/essentials' element={<CategoryProductsCard user={user} products={productsArray} category={"Essentials"} /> }></Route>
+        <Route path='/grocery' element={<CategoryProductsCard user={user} products={productsArray} category={"Grocery"} /> }></Route>
+        <Route path='/lighting' element={<CategoryProductsCard user={user} products={productsArray} category={"Lighting"} /> }></Route>
+        <Route path='/pets' element={<CategoryProductsCard user={user} products={productsArray} category={"Pets"} /> }></Route>
+        <Route path='/homegoods' element={<CategoryProductsCard user={user} products={productsArray} category={"Homegoods"} /> }></Route>
         <Route path='/topdeals' element={<TopDeals products={productsArray} /> }></Route>
         <Route path='/search' element={<SearchResult products={productsArray} searchTerm={searchTerm}/>} />
-
         
       </Routes>
     </Router>

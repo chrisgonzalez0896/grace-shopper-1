@@ -6,7 +6,7 @@ import ProductCardList from "./ProductCardList";
 
 const CategoryProductsCard = (props) => {
 
-  const { products, category } = props;
+  const { products, category, user } = props;
   const FEATURED_NUMBER = 5;
 
   const getProductsByCategory = (category, products) => {
@@ -19,7 +19,7 @@ const CategoryProductsCard = (props) => {
     <Container>
       <h1> {category} </h1>
       <PictureSlider products={getProductsByCategory(category, products)} maxItems={FEATURED_NUMBER}/>
-      <ProductCardList products={getProductsByCategory(category, products)} />
+      <ProductCardList user={user} products={getProductsByCategory(category, products)} />
     </Container>
 
   )

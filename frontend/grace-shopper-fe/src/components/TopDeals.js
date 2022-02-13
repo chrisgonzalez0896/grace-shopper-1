@@ -5,7 +5,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Carousel from 'react-material-ui-carousel';
-import ProductCard from "./ProductCard";
+import ProductCard from "./productCard";
 
 const TopDeals = (props) => {
   const { products } = props;
