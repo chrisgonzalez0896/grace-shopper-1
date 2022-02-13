@@ -8,8 +8,10 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import Collapse from "@mui/material/Collapse";
+import Box from '@mui/material/Box';
 import { red } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import React, { useState } from "react";
 import { currencyFormat } from "../helpers/formats";
@@ -21,7 +23,10 @@ const ProductCard = (props) => {
     product,
     setOpenAddToCart,
     setProductToAddToCart,
-    setAnchorEl } = props;
+    setAnchorEl,
+setTotal,
+total } = props;
+
 
     const navigate = useNavigate();  
     const { expand, ...other } = props.product;  
@@ -48,43 +53,25 @@ const ProductCard = (props) => {
     setProductToAddToCart(product);
     setOpenAddToCart(true);
   }  
-
+  
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, display:"flex", flexDirection:"column"}}>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="category">
-            R
-          </Avatar>
-        }
         action={currencyFormat(product.price)}
         title={product.name}
         subheader=""
       />
-      <CardMedia
-        component="img"
-        height="140"
-        // image={product.pictureLinks[0]}
-        alt="Product"
-      />      <CardActions disableSpacing>
-        <IconButton aria-label="add to cart">
-          <AddShoppingCartIcon onClick={handleAddToCartClick}/>
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>{product.detail}</Typography>
-        </CardContent>
-      </Collapse>    </Card>
+
+    <Box sx={{display:"flex", flexDirection:"column", alignSelf:"flex-end"
+}}>
+        <Button>
+        REMOVE FROM CART
+    </Button>
+
+    </Box>
+
+
+    </Card>
   );
 };
 export default ProductCard;

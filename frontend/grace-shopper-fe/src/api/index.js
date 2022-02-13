@@ -463,6 +463,23 @@ export const addToCartPets = async (userId, productId) => {
   }
 };
 
+export const fetchCartByUserId = async ( userId ) => {
+
+  console.log("userId: ", userId)
+  try {
+    const response = await fetch(`${BASE_URL}/cart/${userId}`, {
+      method: "GET",
+      headers: getHeaders(),
+    });
+    const data = await response.json();
+    console.log('data in api', data)
+    return data;
+  } catch (error) {
+    console.log("An error occurred while fetching the cart.");
+    throw error;
+  }
+}
+
 // export const postNewProduct = async (name, detail, category, price, linksArray) => {
 //   try {
 //     const response = await fetch(`${BASE_URL}/products`, {

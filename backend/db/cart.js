@@ -1,16 +1,36 @@
 const client = require("./client")
-
+const { getProductsById } = require("./products")
 
 
 async function getCartByUserId( userId ){
     console.log("Getting cart by userId: ", userId);
     try{
+
+        const array = []; 
+        const returnObj = {};
+
         const { rows: cart } = await client.query(`
             SELECT *
             FROM cart
             WHERE "userId"=$1;
         `, [ userId ]);
-        return cart;
+
+        console.log('cart in db: ', cart )
+        let total = 0;
+        for(let i = 0; i < cart.length; i++){
+            let currentProduct = await getProductsById(cart[i].productId);
+            array.push(currentProduct);
+            total += currentProduct.price;
+        }
+
+        console.log('array in db: ', array)
+
+        returnObj.cart = array;
+        returnObj.total = total;
+
+        console.log('returnObj in db: ', returnObj);
+
+        return returnObj;
     } catch(error){
         throw error;
     }

@@ -12,11 +12,15 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import { loadTokenFromLocalStorage } from './helpers/tokenHelpers';
 import OrderDetail from './components/OrderDetail';
-import { fetchAllProducts } from "./api/index";
+import { 
+  fetchAllProducts,
+  fetchCartByUserId
+} from "./api/index";
 import TopDeals from './components/TopDeals';
 import CategoryProductsCard from './components/CategoryProductsCard';
 import SearchBar from './components/Search';
 import SearchResult from './components/SearchResult';
+import Cart from './components/Cart';
 
 function App() {
   
@@ -30,9 +34,12 @@ function App() {
   const [productBeingViewed, setProductBeingViewed] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
 
+
+
   useEffect(() => {
     Promise.all([
-      fetchAllProducts(), //need to make a a getAllProductPictures function in api/index and integrate throughout backend
+      fetchAllProducts(),
+       //need to make a a getAllProductPictures function in api/index and integrate throughout backend
     ]).then(([productsFromAPI]) => {
       setProductsArray(productsFromAPI);
       
@@ -40,11 +47,14 @@ function App() {
   }, [setProductsArray]);
 
 
+
+
   const handleLogout = () => {
     setUser({});
     localStorage.removeItem('token');
   };
 
+  console.log("userId on home page: ", user.id)
   return (
     <Router>
       <NavBar handleLogout={handleLogout} user={user} products={products} setSearchTerm={setSearchTerm}/> 
@@ -63,7 +73,7 @@ function App() {
         <Route path='/homegoods' element={<CategoryProductsCard user={user} products={productsArray} category={"Homegoods"} /> }></Route>
         <Route path='/topdeals' element={<TopDeals products={productsArray} /> }></Route>
         <Route path='/search' element={<SearchResult products={productsArray} searchTerm={searchTerm}/>} />
-        
+        <Route path='/cart/:userId' element={<Cart user={user} />} />
       </Routes>
     </Router>
   );

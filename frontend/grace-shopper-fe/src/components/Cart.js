@@ -1,54 +1,76 @@
-import { CardActionArea } from "@mui/material";
+import { Container } from "@mui/material";
 import React, { useState, useEffect } from "react";
+import ProductCardListInCart from './ProductCardListInCart';
+import {
+  fetchCartByUserId
+} from "../api/index";
 
-import "./App.css";
 
-const ProductDisplay = () => (
-  <section>
-    <div className="product">
-      <img
-        src="https://i.imgur.com/EHyR2nP.png"
-        alt="The cover of Stubborn Attachments"
-      />
+const Cart = ( props ) => {
 
-      <div className="description">
-        <h3>Stubborn Attachments</h3>
+  const { user } = props;
+  const [cart, setCart] = useState([]);
+  const [cartTotal, setCartTotal] = useState(0);
 
-        <h5>$20.00</h5>
-      </div>
-    </div>
-
-    <form action="/create-checkout-session" method="POST">
-      <button type="submit">Checkout</button>
-    </form>
-  </section>
-);
-
-const Message = ({ message }) => (
-  <section>
-    <p>{message}</p>
-  </section>
-);
-
-export default function App() {
-  const [message, setMessage] = useState("");
+  
 
   useEffect(() => {
-    // Check to see if this is a redirect back from Checkout
+    Promise.all([
+      fetchCartByUserId(user.id),
+       //need to make a a getAllProductPictures function in api/index and integrate throughout backend
+    ]).then(([cartFromAPI]) => {
+      setCart(cartFromAPI.cart);
+      setCartTotal(cartFromAPI.total);
+      console.log('carttotal in cart.js', cartFromAPI.total)
+      console.log('cart from API: ', cartFromAPI.cart)
+    });
+  }, [setCart]);
 
-    const query = new URLSearchParams(window.location.search);
+ 
 
-    if (query.get("success")) {
-      setMessage("Order placed! You will receive an email confirmation.");
-    }
+  console.log(
+    'cart in cart.js: ', cart
+  )
+//   const { user } = props;
 
-    if (query.get("canceled")) {
-      setMessage(
-        "Order canceled -- continue to shop around and checkout when you're ready."
-      );
-    }
-  }, []);
+//   console.log("userId in cart.js: ", user.id)
 
-  return message ? <Message message={message} /> : <ProductDisplay />;
+//   let userCart = [];
+//   const [returnValue, setReturnValue] = useState(<></>);
+
+//   function annoying(stuff){
+//     console.log("stuff: ", stuff);
+//     userCart = stuff;
+//     let renderStuff = (<Container>
+//    <ProductCardListInCart user={user} products={userCart} />
+//  </Container>)
+
+//     setReturnValue(renderStuff);
+//   }
+
+//     // setUserCart(fetchCartByUserId(user.id));
+
+//     const getUserCart = async( currentUser ) => {
+//       const cart = await fetchCartByUserId(currentUser.id);
+//       return cart;
+//     }
+
+//     const thisUsersCart = getUserCart(user);
+
+//     thisUsersCart.then(function(result) {
+//       // userCart = result.cart;
+//       annoying(result.cart);
+//       console.log('result: ', result.cart)
+//       return result.cart;
+//       // "Some User token"
+//    })
+
+
+
+//     console.log('look here', userCart)
+// console.log("userCart in cart: ", userCart)
+
+ return <ProductCardListInCart user={user} products={cart} total={cartTotal} />;
 }
 
+export default Cart;

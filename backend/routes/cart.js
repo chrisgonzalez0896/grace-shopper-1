@@ -8,11 +8,16 @@ const { getCartByUserId,
 
 
 // Need to ensure userId gets passed to here!
-cartRouter.get('/', async(req, res) => {
+cartRouter.get('/:userId', async(req, res) => {
+
+    const userId = req.params.userId;
+
     try{
-        const cart = await getCartByUserId( req.user.id );
+        const cart = await getCartByUserId( userId );
         
-        res.send( { cart} );
+        res.send(  cart  );
+
+        console.log('cart in route: ', cart)
    
     } catch(error){
         throw error;
@@ -25,7 +30,7 @@ cartRouter.post('/', async(req, res) => {
     const { userId, productId } = req.body;
     try{
         await addToCart(req.body);
-        const cart = awaitCartByUserId( userId );
+        const cart = await CartByUserId( userId );
         res.send( { cart } );
     } catch(error){
         console.error(error);

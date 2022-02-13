@@ -15,6 +15,7 @@ import HomeIcon from "@mui/icons-material/Home";
 
 const NavBar = ({ user, handleLogout, products, orders, setSearchTerm }) => {
   const navigate = useNavigate();
+  const urlEnd = '/cart/' + user.id;
 
   return (
     <Container>
@@ -91,7 +92,9 @@ const NavBar = ({ user, handleLogout, products, orders, setSearchTerm }) => {
                 </Button>
               </nav>
             )}
-            <Button>
+            <Button
+              href={urlEnd}
+            >
               <ShoppingCartIcon />
             </Button>
           </Toolbar>
